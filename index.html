@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bukwa — Support</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --card: #ffffff;
+    --muted: #6b6b6b;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
+  header { text-align: center; margin-bottom: 56px; }
+  .logo {
+    width: 96px; height: 96px; border-radius: 22px;
+    margin: 0 auto 24px; display: block;
+  }
+  h1 { font-size: 44px; margin: 0 0 12px; letter-spacing: -0.5px; }
+  .subtitle { color: var(--ink-soft); font-size: 17px; margin: 0 0 28px; font-style: italic; }
+  .lang-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 10px 40px 10px 20px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, serif;
+    font-size: 15px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%231a1a1a' stroke-width='1.5' d='M1 1l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+  .faq { display: flex; flex-direction: column; gap: 18px; }
+  .item {
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 22px 26px;
+  }
+  .q {
+    font-size: 19px; font-weight: 700; margin: 0 0 10px;
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .q::before { content: "❦"; color: var(--ink); }
+  .a { margin: 0; color: var(--ink-soft); line-height: 1.55; font-size: 16px; }
+  .contact {
+    margin-top: 48px; text-align: center; padding: 28px;
+    border: 1.5px dashed var(--ink); border-radius: 14px; background: var(--card);
+  }
+  .contact h2 { margin: 0 0 8px; font-size: 22px; }
+  .contact a { color: var(--ink); font-weight: 700; }
+  footer {
+    margin-top: 64px; text-align: center;
+    color: var(--muted); font-size: 14px; font-style: italic;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111111;
+      --ink: #f0ece3;
+      --ink-soft: #c4c0b6;
+      --card: #1a1a1a;
+      --muted: #8a8678;
+    }
+    .lang-select {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%23f0ece3' stroke-width='1.5' d='M1 1l5 5 5-5'/></svg>");
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img class="logo" src="images/bukwa_logo.png" alt="Bukwa" />
+      <h1 data-i18n="title">Support Bukwa</h1>
+      <p class="subtitle" data-i18n="subtitle">Frequently asked questions about learning languages with Bukwa</p>
+      <select class="lang-select" id="langSelect"></select>
+    </header>
+
+    <section class="faq" id="faq"></section>
+
+    <div class="contact">
+      <h2 data-i18n="contactTitle">Need more help?</h2>
+      <p><span data-i18n="contactText">Drop us a line at</span> <a href="mailto:bukwa.ai@icloud.com">bukwa.ai@icloud.com</a></p>
+    </div>
+
+    <footer data-i18n="footer">Bukwa © 2026 · All rights reserved</footer>
+  </div>
+
+<script>
+const FAQ_KEYS = ["what","addWord","selectLevel","useDict","multiDict","saveWordsFromText","srs","limits","secure"];
+
+const LANGS = {
+  en: { name: "English",
+    title: "Support Bukwa",
+    subtitle: "Frequently asked questions about learning languages with Bukwa",
+    contactTitle: "Need more help?",
+    contactText: "Drop us a line at",
+    footer: "Bukwa © 2026 · All rights reserved",
+    faq: {
+      what: ["What is Bukwa?", "Bukwa is an iOS app that helps you learn languages through personalized AI-generated stories tailored to your level and vocabulary."],
+      addWord: ["How do I add a new word?", "Open the Words tab and tap the “+” button to add a word manually, or use the AI bulk-add option to generate a batch of words at once."],
+      selectLevel: ["How do I choose the language level for a story?", "Each time you generate a story, Bukwa asks for the CEFR level (A1–C2) and remembers your last choice. You can pick any level for every new story."],
+      useDict: ["How do I use my dictionary for story generation?", "When generating a story, select your dictionary as the source of words — Bukwa will weave them into the story so you see them in context."],
+      multiDict: ["Can I use multiple dictionaries in one story?", "Not yet — each story uses one dictionary at a time. Multi-dictionary support is on the roadmap."],
+      saveWordsFromText: ["How do I save new words from a story into my dictionary?", "While reading a story, tap any unknown word to see its translation, then add it to your dictionary with one tap."],
+      srs: ["What are spaced repetition reviews?", "Bukwa uses the SM-2 algorithm to schedule word reviews at optimal intervals, helping you remember vocabulary long-term with minimal effort."],
+      limits: ["Where can I see my AI limits for stories and translations?", "Open Settings to see your current limits for AI story generation and word translations, along with how much you have left."],
+      secure: ["Is my data secure?", "Your account data is stored securely in our backend for authentication. Words and stories live on your device; some content may also be cached on our servers to speed things up. We never share your personal data with third parties."]
+    }},
+  ua: { name: "Українська",
+    title: "Підтримка Bukwa",
+    subtitle: "Часті запитання про вивчення мов із Bukwa",
+    contactTitle: "Потрібна додаткова допомога?",
+    contactText: "Напишіть нам на",
+    footer: "Bukwa © 2026 · Усі права захищені",
+    faq: {
+      what: ["Що таке Bukwa?", "Bukwa — це iOS-додаток, який допомагає вивчати мови через персоналізовані історії, створені ШІ під ваш рівень і словник."],
+      addWord: ["Як додати нове слово?", "Відкрийте вкладку «Слова» і натисніть «+», щоб додати слово вручну, або використайте додавання через ШІ, щоб згенерувати одразу пачку слів."],
+      selectLevel: ["Як обрати рівень мови для історії?", "Перед кожною генерацією Bukwa запитує рівень CEFR (A1–C2) і запам’ятовує останній вибір. Для кожної нової історії можна обрати будь-який рівень."],
+      useDict: ["Як використати свій словник для генерації історії?", "Під час створення історії виберіть словник як джерело слів — Bukwa вплете їх у текст, щоб ви побачили їх у контексті."],
+      multiDict: ["Чи можна використати кілька словників в одній історії?", "Поки ні — одна історія використовує один словник. Підтримка кількох словників у планах."],
+      saveWordsFromText: ["Як зберегти нові слова з історії у словник?", "Під час читання торкніться незнайомого слова, щоб побачити переклад, і додайте його до словника одним дотиком."],
+      srs: ["Що таке інтервальне повторення?", "Bukwa використовує алгоритм SM-2 для повторення слів в оптимальні інтервали, щоб запам’ятати лексику надовго."],
+      limits: ["Де подивитися ліміти на ШІ-генерацію та переклади?", "Відкрийте Налаштування — там видно поточні ліміти на створення історій і переклад слів та скільки лишилося."],
+      secure: ["Чи безпечні мої дані?", "Дані акаунта зберігаються в нашому захищеному бекенді для авторизації. Слова й історії — на вашому пристрої; частина може кешуватися на серверах для прискорення. Особисті дані не передаються третім особам."]
+    }},
+  cs: { name: "Čeština",
+    title: "Podpora Bukwa",
+    subtitle: "Často kladené otázky o učení jazyků s Bukwou",
+    contactTitle: "Potřebujete více pomoci?",
+    contactText: "Napište nám na",
+    footer: "Bukwa © 2026 · Všechna práva vyhrazena",
+    faq: {
+      what: ["Co je Bukwa?", "Bukwa je iOS aplikace, která vám pomáhá učit se jazyky pomocí personalizovaných příběhů generovaných AI."],
+      addWord: ["Jak přidám nové slovo?", "Otevřete kartu Slova a klepněte na „+“ pro ruční přidání, nebo použijte hromadné přidání přes AI a vygenerujte celou várku slov."],
+      selectLevel: ["Jak vybrat jazykovou úroveň pro příběh?", "Při každé generaci se Bukwa zeptá na úroveň CEFR (A1–C2) a zapamatuje si poslední volbu. Pro každý nový příběh můžete zvolit jakoukoli úroveň."],
+      useDict: ["Jak použiji svůj slovník pro generování příběhu?", "Při vytváření příběhu vyberte svůj slovník jako zdroj slov — Bukwa je vplete do textu a uvidíte je v kontextu."],
+      multiDict: ["Mohu v jednom příběhu použít více slovníků?", "Zatím ne — každý příběh používá jeden slovník. Podpora více slovníků je v plánu."],
+      saveWordsFromText: ["Jak uložím nová slova z příběhu do slovníku?", "Při čtení klepněte na neznámé slovo, zobrazí se překlad a jedním klepnutím ho přidáte do slovníku."],
+      srs: ["Co jsou opakování s rozestupy?", "Bukwa používá algoritmus SM-2 pro plánování opakování slov v optimálních intervalech."],
+      limits: ["Kde vidím své limity na AI generování a překlady?", "V Nastavení uvidíte aktuální limity pro generování příběhů a překlady slov včetně toho, kolik vám zbývá."],
+      secure: ["Jsou moje data v bezpečí?", "Data účtu jsou bezpečně uložena v našem backendu kvůli autentizaci. Slova a příběhy jsou ve vašem zařízení; část obsahu se může cachovat na serverech pro zrychlení. Osobní data nesdílíme s třetími stranami."]
+    }},
+  fr: { name: "Français",
+    title: "Support Bukwa",
+    subtitle: "Questions fréquentes sur l’apprentissage des langues avec Bukwa",
+    contactTitle: "Besoin d’aide supplémentaire ?",
+    contactText: "Écrivez-nous à",
+    footer: "Bukwa © 2026 · Tous droits réservés",
+    faq: {
+      what: ["Qu’est-ce que Bukwa ?", "Bukwa est une application iOS qui vous aide à apprendre les langues grâce à des histoires personnalisées générées par IA."],
+      addWord: ["Comment ajouter un nouveau mot ?", "Ouvrez l’onglet Mots et appuyez sur « + » pour ajouter un mot manuellement, ou utilisez l’ajout en lot par IA pour générer un paquet de mots d’un coup."],
+      selectLevel: ["Comment choisir le niveau de langue pour une histoire ?", "À chaque génération, Bukwa demande le niveau CEFR (A1–C2) et mémorise votre dernier choix. Vous pouvez choisir n’importe quel niveau pour chaque nouvelle histoire."],
+      useDict: ["Comment utiliser mon dictionnaire pour générer une histoire ?", "Lors de la création d’une histoire, sélectionnez votre dictionnaire comme source de mots — Bukwa les intégrera au récit pour les voir en contexte."],
+      multiDict: ["Puis-je utiliser plusieurs dictionnaires dans une histoire ?", "Pas encore — chaque histoire utilise un seul dictionnaire. La prise en charge multi-dictionnaires est prévue."],
+      saveWordsFromText: ["Comment enregistrer les nouveaux mots d’une histoire dans mon dictionnaire ?", "En lisant, appuyez sur un mot inconnu pour voir sa traduction, puis ajoutez-le à votre dictionnaire en un geste."],
+      srs: ["Qu’est-ce que la répétition espacée ?", "Bukwa utilise l’algorithme SM-2 pour planifier les révisions à des intervalles optimaux."],
+      limits: ["Où voir mes limites IA pour les histoires et traductions ?", "Ouvrez les Réglages pour voir vos limites actuelles de génération d’histoires et de traduction de mots, ainsi que ce qu’il vous reste."],
+      secure: ["Mes données sont-elles sécurisées ?", "Les données de votre compte sont stockées en toute sécurité dans notre backend pour l’authentification. Les mots et histoires résident sur votre appareil ; une partie du contenu peut être mise en cache sur nos serveurs pour accélérer l’app. Vos données personnelles ne sont jamais partagées."]
+    }},
+  de: { name: "Deutsch",
+    title: "Bukwa-Support",
+    subtitle: "Häufig gestellte Fragen zum Sprachenlernen mit Bukwa",
+    contactTitle: "Brauchen Sie weitere Hilfe?",
+    contactText: "Schreiben Sie uns an",
+    footer: "Bukwa © 2026 · Alle Rechte vorbehalten",
+    faq: {
+      what: ["Was ist Bukwa?", "Bukwa ist eine iOS-App, die Ihnen hilft, Sprachen durch personalisierte KI-generierte Geschichten zu lernen."],
+      addWord: ["Wie füge ich ein neues Wort hinzu?", "Öffnen Sie den Tab „Wörter“ und tippen Sie auf „+“, um ein Wort manuell hinzuzufügen, oder nutzen Sie die KI-Massenfunktion, um eine ganze Wortpackung auf einmal zu erzeugen."],
+      selectLevel: ["Wie wähle ich das Sprachniveau für eine Geschichte?", "Bei jeder Generierung fragt Bukwa nach dem CEFR-Niveau (A1–C2) und merkt sich Ihre letzte Wahl. Für jede neue Geschichte können Sie ein beliebiges Niveau wählen."],
+      useDict: ["Wie nutze ich mein Wörterbuch zur Geschichtenerstellung?", "Wählen Sie beim Erstellen Ihr Wörterbuch als Wortquelle — Bukwa baut die Wörter in die Geschichte ein, sodass Sie sie im Kontext sehen."],
+      multiDict: ["Kann ich mehrere Wörterbücher in einer Geschichte verwenden?", "Noch nicht — jede Geschichte nutzt ein Wörterbuch. Mehrfach-Wörterbuch ist geplant."],
+      saveWordsFromText: ["Wie speichere ich neue Wörter aus einer Geschichte in mein Wörterbuch?", "Tippen Sie beim Lesen auf ein unbekanntes Wort, um die Übersetzung zu sehen, und fügen Sie es mit einem Tipp hinzu."],
+      srs: ["Was ist Spaced Repetition?", "Bukwa verwendet den SM-2-Algorithmus, um Wortwiederholungen in optimalen Intervallen zu planen."],
+      limits: ["Wo sehe ich meine KI-Limits für Geschichten und Übersetzungen?", "In den Einstellungen sehen Sie Ihre aktuellen Limits für KI-Generierung und Wortübersetzung sowie das verbleibende Kontingent."],
+      secure: ["Sind meine Daten sicher?", "Kontodaten werden zur Authentifizierung sicher in unserem Backend gespeichert. Wörter und Geschichten liegen auf Ihrem Gerät; manche Inhalte werden zur Beschleunigung auf unseren Servern zwischengespeichert. Persönliche Daten geben wir nicht weiter."]
+    }},
+  it: { name: "Italiano",
+    title: "Supporto Bukwa",
+    subtitle: "Domande frequenti sull’apprendimento delle lingue con Bukwa",
+    contactTitle: "Hai bisogno di altro aiuto?",
+    contactText: "Scrivici a",
+    footer: "Bukwa © 2026 · Tutti i diritti riservati",
+    faq: {
+      what: ["Cos’è Bukwa?", "Bukwa è un’app iOS che ti aiuta a imparare le lingue tramite storie personalizzate generate dall’IA."],
+      addWord: ["Come aggiungo una nuova parola?", "Apri la scheda Parole e tocca «+» per aggiungere manualmente, oppure usa l’aggiunta in blocco con IA per generare un pacchetto di parole in un colpo solo."],
+      selectLevel: ["Come scelgo il livello linguistico per una storia?", "Ad ogni generazione Bukwa chiede il livello CEFR (A1–C2) e ricorda l’ultima scelta. Per ogni nuova storia puoi scegliere qualsiasi livello."],
+      useDict: ["Come uso il mio dizionario per generare una storia?", "Quando crei una storia, seleziona il dizionario come fonte di parole — Bukwa le inserirà nella storia per vederle nel contesto."],
+      multiDict: ["Posso usare più dizionari in una storia?", "Non ancora — ogni storia usa un solo dizionario. Il supporto multi-dizionario è in roadmap."],
+      saveWordsFromText: ["Come salvo nuove parole da una storia nel dizionario?", "Mentre leggi, tocca una parola sconosciuta per vedere la traduzione e aggiungila al dizionario con un tocco."],
+      srs: ["Cos’è la ripetizione dilazionata?", "Bukwa usa l’algoritmo SM-2 per pianificare le revisioni a intervalli ottimali."],
+      limits: ["Dove vedo i miei limiti IA per storie e traduzioni?", "Apri le Impostazioni per vedere i limiti attuali di generazione storie e traduzione parole, oltre a quanto ti rimane."],
+      secure: ["I miei dati sono al sicuro?", "I dati dell’account sono archiviati in modo sicuro nel nostro backend per l’autenticazione. Parole e storie risiedono sul dispositivo; alcuni contenuti possono essere memorizzati in cache sui nostri server per velocizzare l’app. Non condividiamo dati personali con terzi."]
+    }},
+  pl: { name: "Polski",
+    title: "Wsparcie Bukwa",
+    subtitle: "Najczęściej zadawane pytania o naukę języków z Bukwą",
+    contactTitle: "Potrzebujesz więcej pomocy?",
+    contactText: "Napisz do nas na",
+    footer: "Bukwa © 2026 · Wszelkie prawa zastrzeżone",
+    faq: {
+      what: ["Czym jest Bukwa?", "Bukwa to aplikacja iOS, która pomaga uczyć się języków dzięki spersonalizowanym historiom generowanym przez AI."],
+      addWord: ["Jak dodać nowe słowo?", "Otwórz zakładkę Słowa i naciśnij „+”, aby dodać słowo ręcznie, albo użyj dodawania zbiorczego AI, aby wygenerować całą paczkę słów naraz."],
+      selectLevel: ["Jak wybrać poziom językowy dla historii?", "Przy każdej generacji Bukwa pyta o poziom CEFR (A1–C2) i zapamiętuje ostatni wybór. Dla każdej nowej historii możesz wybrać dowolny poziom."],
+      useDict: ["Jak użyć swojego słownika do generowania historii?", "Tworząc historię, wybierz słownik jako źródło słów — Bukwa wplecie je w tekst, byś zobaczył je w kontekście."],
+      multiDict: ["Czy mogę użyć kilku słowników w jednej historii?", "Jeszcze nie — każda historia używa jednego słownika. Obsługa wielu słowników jest w planach."],
+      saveWordsFromText: ["Jak zapisać nowe słowa z historii do słownika?", "Podczas czytania dotknij nieznanego słowa, by zobaczyć tłumaczenie, i jednym dotknięciem dodaj je do słownika."],
+      srs: ["Czym jest powtórka rozłożona w czasie?", "Bukwa używa algorytmu SM-2 do planowania powtórek w optymalnych odstępach."],
+      limits: ["Gdzie zobaczę moje limity AI na historie i tłumaczenia?", "Otwórz Ustawienia, aby zobaczyć aktualne limity na generowanie historii i tłumaczenie słów oraz ile Ci zostało."],
+      secure: ["Czy moje dane są bezpieczne?", "Dane konta są bezpiecznie przechowywane w naszym backendzie do uwierzytelniania. Słowa i historie są na Twoim urządzeniu; część treści może być cache’owana na serwerach, aby przyspieszyć aplikację. Danych osobowych nie udostępniamy."]
+    }},
+  ru: { name: "Русский",
+    title: "Поддержка Bukwa",
+    subtitle: "Часто задаваемые вопросы об изучении языков с Bukwa",
+    contactTitle: "Нужна дополнительная помощь?",
+    contactText: "Напишите нам на",
+    footer: "Bukwa © 2026 · Все права защищены",
+    faq: {
+      what: ["Что такое Bukwa?", "Bukwa — это iOS-приложение, которое помогает изучать языки с помощью персонализированных историй, созданных ИИ."],
+      addWord: ["Как добавить новое слово?", "Откройте вкладку «Слова» и нажмите «+», чтобы добавить слово вручную, или используйте массовое добавление через ИИ, чтобы сгенерировать сразу пачку слов."],
+      selectLevel: ["Как выбрать уровень языка для истории?", "Перед каждой генерацией Bukwa спрашивает уровень CEFR (A1–C2) и запоминает последний выбор. Для каждой новой истории можно выбрать любой уровень."],
+      useDict: ["Как использовать свой словарь для генерации истории?", "При создании истории выберите словарь как источник слов — Bukwa вплетёт их в текст, чтобы вы увидели их в контексте."],
+      multiDict: ["Можно ли использовать несколько словарей в одной истории?", "Пока нет — каждая история использует один словарь. Поддержка нескольких словарей в планах."],
+      saveWordsFromText: ["Как сохранить новые слова из истории в словарь?", "Во время чтения нажмите на незнакомое слово, чтобы увидеть перевод, и одним касанием добавьте его в словарь."],
+      srs: ["Что такое интервальное повторение?", "Bukwa использует алгоритм SM-2 для планирования повторений слов в оптимальные интервалы."],
+      limits: ["Где посмотреть мои лимиты ИИ на истории и переводы?", "Откройте Настройки — там видно текущие лимиты на генерацию историй и перевод слов, а также сколько осталось."],
+      secure: ["Мои данные в безопасности?", "Данные аккаунта надёжно хранятся в нашем бэкенде для авторизации. Слова и истории — на вашем устройстве; часть контента может кешироваться на серверах для ускорения. Личные данные мы не передаём третьим лицам."]
+    }},
+  es: { name: "Español",
+    title: "Soporte Bukwa",
+    subtitle: "Preguntas frecuentes sobre el aprendizaje de idiomas con Bukwa",
+    contactTitle: "¿Necesitas más ayuda?",
+    contactText: "Escríbenos a",
+    footer: "Bukwa © 2026 · Todos los derechos reservados",
+    faq: {
+      what: ["¿Qué es Bukwa?", "Bukwa es una app de iOS que te ayuda a aprender idiomas mediante historias personalizadas generadas por IA."],
+      addWord: ["¿Cómo añado una nueva palabra?", "Abre la pestaña Palabras y pulsa «+» para añadir manualmente, o usa la opción de añadir en bloque con IA para generar un paquete de palabras de una vez."],
+      selectLevel: ["¿Cómo elijo el nivel de idioma para una historia?", "Cada vez que generas una historia, Bukwa pregunta el nivel CEFR (A1–C2) y recuerda tu última elección. Puedes elegir cualquier nivel para cada nueva historia."],
+      useDict: ["¿Cómo uso mi diccionario para generar historias?", "Al crear una historia, selecciona tu diccionario como fuente de palabras — Bukwa las integrará en la historia para verlas en contexto."],
+      multiDict: ["¿Puedo usar varios diccionarios en una historia?", "Aún no — cada historia usa un solo diccionario. El soporte multi-diccionario está en el roadmap."],
+      saveWordsFromText: ["¿Cómo guardo nuevas palabras de una historia en mi diccionario?", "Mientras lees, toca una palabra desconocida para ver su traducción y añádela al diccionario con un toque."],
+      srs: ["¿Qué es la repetición espaciada?", "Bukwa usa el algoritmo SM-2 para programar repasos en intervalos óptimos."],
+      limits: ["¿Dónde veo mis límites de IA para historias y traducciones?", "Abre Ajustes para ver tus límites actuales de generación de historias y traducciones, y cuánto te queda."],
+      secure: ["¿Mis datos están seguros?", "Los datos de tu cuenta se guardan de forma segura en nuestro backend para la autenticación. Las palabras e historias residen en tu dispositivo; parte del contenido puede almacenarse en caché en nuestros servidores para acelerar la app. No compartimos tus datos personales."]
+    }},
+  ja: { name: "日本語",
+    title: "Bukwa サポート",
+    subtitle: "Bukwa での語学学習に関するよくある質問",
+    contactTitle: "さらにサポートが必要ですか？",
+    contactText: "お気軽にご連絡ください：",
+    footer: "Bukwa © 2026 · All rights reserved",
+    faq: {
+      what: ["Bukwa とは？", "Bukwa は、AI が生成するパーソナライズされたストーリーで言語学習を助ける iOS アプリです。"],
+      addWord: ["新しい単語を追加するには？", "「単語」タブを開き「+」をタップして手動で追加するか、AI による一括追加で一度に多数の単語を生成できます。"],
+      selectLevel: ["ストーリーの言語レベルを選ぶには？", "ストーリーを生成するたびに Bukwa が CEFR レベル（A1–C2）を尋ね、前回の選択を記憶します。新しいストーリーごとに任意のレベルを選べます。"],
+      useDict: ["自分の辞書を使ってストーリーを生成するには？", "ストーリー作成時に辞書を単語の元として選ぶと、Bukwa がそれらを物語に織り込み、文脈の中で見ることができます。"],
+      multiDict: ["1 つのストーリーで複数の辞書を使えますか？", "現時点では不可です — 1 ストーリーにつき 1 辞書です。複数辞書対応はロードマップにあります。"],
+      saveWordsFromText: ["ストーリー内の新しい単語を辞書に保存するには？", "読書中に未知の単語をタップして翻訳を確認し、ワンタップで辞書に追加できます。"],
+      srs: ["間隔反復学習とは？", "Bukwa は SM-2 アルゴリズムを使い、最適な間隔で復習を予定します。"],
+      limits: ["AI のストーリー・翻訳の上限はどこで確認できますか？", "設定を開くと、AI ストーリー生成と単語翻訳の現在の上限と残量が確認できます。"],
+      secure: ["データは安全ですか？", "アカウント情報は認証のためにバックエンドに安全に保存されます。単語とストーリーはデバイス上にあり、一部のコンテンツは高速化のためサーバーにキャッシュされる場合があります。個人データを第三者と共有することはありません。"]
+    }},
+  zh: { name: "中文",
+    title: "Bukwa 支持",
+    subtitle: "关于使用 Bukwa 学习语言的常见问题",
+    contactTitle: "需要更多帮助？",
+    contactText: "请联系我们：",
+    footer: "Bukwa © 2026 · 保留所有权利",
+    faq: {
+      what: ["什么是 Bukwa？", "Bukwa 是一款 iOS 应用，通过 AI 生成的个性化故事帮助您学习语言。"],
+      addWord: ["如何添加新单词？", "打开「单词」标签并点击「+」手动添加，或使用 AI 批量添加一次生成一批单词。"],
+      selectLevel: ["如何为故事选择语言等级？", "每次生成故事时，Bukwa 会询问 CEFR 等级（A1–C2）并记住您的上次选择。每个新故事都可以选择任意等级。"],
+      useDict: ["如何使用我的词典生成故事？", "创建故事时选择您的词典作为单词来源 — Bukwa 会将这些单词融入故事，让您在语境中看到它们。"],
+      multiDict: ["可以在一个故事中使用多个词典吗？", "暂不支持 — 每个故事只能使用一个词典。多词典支持已在规划中。"],
+      saveWordsFromText: ["如何将故事中的新单词保存到我的词典？", "阅读时点击不认识的单词查看翻译，一键即可添加到词典。"],
+      srs: ["什么是间隔重复？", "Bukwa 使用 SM-2 算法以最佳间隔安排单词复习。"],
+      limits: ["在哪里查看我的 AI 故事和翻译额度？", "打开设置即可查看 AI 故事生成和单词翻译的当前额度和剩余量。"],
+      secure: ["我的数据安全吗？", "账户数据安全地存储在我们的后端用于身份验证。单词和故事保存在您的设备上；部分内容可能缓存在服务器上以加快应用速度。我们绝不与第三方共享您的个人数据。"]
+    }}
+};
+
+const LANG_CODES = ["en","ua","cs","fr","de","it","pl","ru","es","ja","zh"];
+
+function getLangFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const code = (params.get("lang") || "").toLowerCase();
+  return LANGS[code] ? code : "en";
+}
+
+function setUrlLang(code) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("lang", code);
+  window.history.replaceState({}, "", url);
+}
+
+function render(code) {
+  const data = LANGS[code];
+  document.documentElement.lang = code;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (data[key]) el.textContent = data[key];
+  });
+  const faq = document.getElementById("faq");
+  faq.innerHTML = "";
+  FAQ_KEYS.forEach(k => {
+    const [q, a] = data.faq[k];
+    const item = document.createElement("div");
+    item.className = "item";
+    item.innerHTML = `<p class="q"></p><p class="a"></p>`;
+    item.querySelector(".q").textContent = q;
+    item.querySelector(".a").textContent = a;
+    faq.appendChild(item);
+  });
+}
+
+const select = document.getElementById("langSelect");
+LANG_CODES.forEach(c => {
+  const opt = document.createElement("option");
+  opt.value = c;
+  opt.textContent = LANGS[c].name;
+  select.appendChild(opt);
+});
+
+const initial = getLangFromUrl();
+select.value = initial;
+render(initial);
+
+select.addEventListener("change", e => {
+  const code = e.target.value;
+  setUrlLang(code);
+  render(code);
+});
+</script>
+</body>
+</html>
